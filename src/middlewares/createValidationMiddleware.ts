@@ -3,8 +3,7 @@ import * as yup from 'yup';
 
 const yupObjectShape = yup.object().shape;
 type ValidateSchemaType = ReturnType<typeof yupObjectShape>;
-type CreateMiddleware =
-  (ValidateSchemaType) =>  MiddlewareType;
+type CreateMiddleware = (ValidateSchemaType) =>  MiddlewareType;
 
 const createValidationMiddleware: CreateMiddleware = (validateSchema) => (req,res,next) => {
   try {
