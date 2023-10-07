@@ -1,11 +1,7 @@
-import { Request, Response, NextFunction } from 'express';
+import { MiddlewareType } from './MiddlewareType';
 import logger from '../logger';
 
-export default function errorHandler(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+const errorHandler: MiddlewareType = (req, res, next) => {
     try {
         next();
     } catch (error) {
@@ -13,4 +9,6 @@ export default function errorHandler(
         logger.error(error.stack);
         res.status(500).json({ error: 'Internal Server Error' });
     }
-}
+};
+
+export default errorHandler;

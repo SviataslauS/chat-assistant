@@ -65,7 +65,7 @@ export async function handleMessage(req: Request, res: Response) {
     res.sendStatus(200);
 }
 
-function removeTimeout(userId: string) {
+function removeTimeout(userId: string): void {
   clearTimeout(timeoutIdByUser[userId]);
   delete timeoutIdByUser[userId];
 }

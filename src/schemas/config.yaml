@@ -1,0 +1,29 @@
+type: object
+properties:
+  PORT:
+    type: string
+  DB_HOST:
+    type: string
+  DB_PORT:
+    type: string
+  DB_NAME:
+    type: string
+  DB_USER:
+    type: string
+  DB_PASSWORD:
+    type: string
+  OPENAI_API_KEY:
+    type: string
+  DEBUG:
+    type: string
+  CHAT_SERVICE_API:
+    type: string
+required:
+  - PORT
+  - DB_HOST
+  - DB_PORT
+  - DB_NAME
+  - DB_USER
+  - DB_PASSWORD
+  - OPENAI_API_KEY
+  - CHAT_SERVICE_API
