@@ -8,7 +8,6 @@
     "lint:fix": "eslint . --ext .ts --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
     "create-db-model": "npx sequelize-cli model:generate --name ChatMessage --attributes id:uuid,side:string,message:text,userId:uuid",
-    "migrate": "npx sequelize-cli db:migrate"
   },
   "husky": {
     "hooks": {
@@ -19,15 +18,14 @@
     "*.ts": "eslint --fix"
   },
   "keywords": [],
-  "author": "",
+  "author": "Sviataslau Salamennik <s.salamennik@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.2",
-    "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "express-async-handler": "^1.2.0",
     "js-yaml-loader": "^1.2.2",
     "openai": "^4.11.1",
-    "pg": "^8.11.3",
     "sequelize": "^6.33.0",
     "sequelize-cli": "^6.6.1",
     "winston-console-formatter": "^1.0.0-beta.3",
