@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
-/* eslint-disable @typescript-eslint/no-dynamic-delete */
 import { type Request, type Response } from 'express';
 import openai from '../openai';
 import ChatMessage from '../models/ChatMessage';
@@ -12,8 +10,9 @@ const AI_MODEL_NAME = 'text-davinci-002';
 const AI_REQ_TIMEOUT = 40000; // 40sec
 const CHAT_SERVICE_HOOK_URL = `${config.CHAT_SERVICE_API}/send`;
 
-const aiControllersByUser: Record<string, AbortController> = {};
-const timeoutIdsByUser: Record<string, NodeJS.Timeout> = {};
+
+const aiControllersByUser = new Map<string, AbortController>();
+const timeoutIdsByUser = new Map<string, NodeJS.Timeout>();
 
 type ChatMessageCreateType = typeof ChatMessage.create;
 type SaveClientMessageType = (message: string, userId: string) => Promise<ReturnType<ChatMessageCreateType>>;
@@ -22,20 +21,20 @@ const saveClientMessage: SaveClientMessageType =
 
 export async function handleMessage(req: Request, res: Response): Promise<void> {
     const { message, userId } = req.body as Record<string, string>;
-    if (timeoutIdsByUser[userId]) {
-      clearTimeout(timeoutIdsByUser[userId]);
-      delete timeoutIdsByUser[userId];
+    if (timeoutIdsByUser.has(userId)) {
+      clearTimeout(timeoutIdsByUser.get(userId));
+      timeoutIdsByUser.delete(userId);
     }
 
-    if (aiControllersByUser[userId]) {
-      aiControllersByUser[userId].abort();
-      delete aiControllersByUser[userId];
+    if (aiControllersByUser.has(userId)) {
+      aiControllersByUser.get(userId)?.abort();
+      aiControllersByUser.delete(userId);
     }
 
     try {
       await saveClientMessage(message, userId);
     } catch (error) {
-      logger.error('Save client message error:', error.message);
+      logger.error('Save client message error:', (error as Error).message);
     }
 
     const sendReqToAI = async (): Promise<void> => {
@@ -46,7 +45,7 @@ export async function handleMessage(req: Request, res: Response): Promise<void> 
 
       const combinedMessage = clientMessages.map((msg) => msg.message).join(' ');
       const controller = new AbortController();
-      aiControllersByUser[userId] = controller;
+      aiControllersByUser.set(userId, controller);
       const aiResponse = await openai.completions.create({
         model: AI_MODEL_NAME,
         prompt: combinedMessage,
@@ -69,7 +68,8 @@ export async function handleMessage(req: Request, res: Response): Promise<void> 
       }
     };
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    timeoutIdsByUser[userId] = setTimeout(sendReqToAI, AI_REQ_TIMEOUT);
+    const timeoutId = setTimeout(sendReqToAI, AI_REQ_TIMEOUT);
+    timeoutIdsByUser.set(userId, timeoutId);
     
     res.sendStatus(200);
 }

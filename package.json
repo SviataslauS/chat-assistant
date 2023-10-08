@@ -7,7 +7,7 @@
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "create-db-model": "npx sequelize-cli model:generate --name ChatMessage --attributes id:uuid,side:string,message:text,userId:uuid",
+    "create-db-model": "npx sequelize-cli model:generate --name ChatMessage --attributes id:uuid,side:string,message:text,userId:uuid"
   },
   "husky": {
     "hooks": {
