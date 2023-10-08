@@ -1,4 +1,4 @@
-import { MiddlewareType } from './MiddlewareType';
+import { type MiddlewareType } from './MiddlewareType';
 import logger from '../logger';
 
 const requestLogger: MiddlewareType = (req, res, next) => {

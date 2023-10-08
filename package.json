@@ -4,7 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "create-db-model": "npx sequelize-cli model:generate --name ChatMessage --attributes id:uuid,side:string,message:text,userId:uuid",
+    "migrate": "npx sequelize-cli db:migrate"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.ts": "eslint --fix"
   },
   "keywords": [],
   "author": "",
@@ -18,12 +30,26 @@
     "pg": "^8.11.3",
     "sequelize": "^6.33.0",
     "sequelize-cli": "^6.6.1",
+    "winston-console-formatter": "^1.0.0-beta.3",
     "yup": "^1.3.2"
   },
   "devDependencies": {
     "@types/express": "^4.17.18",
     "@types/node": "^20.8.3",
     "@types/sequelize": "^4.28.16",
+    "@typescript-eslint/eslint-plugin": "^6.7.4",
+    "@typescript-eslint/parser": "^6.7.4",
+    "eslint": "^8.51.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-config-standard-with-typescript": "^39.1.1",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-n": "^16.1.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-typescript": "^0.14.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1",
+    "prettier": "^3.0.3",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   }

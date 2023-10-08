@@ -1,4 +1,6 @@
-import { Request, Response } from 'express';
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable @typescript-eslint/no-dynamic-delete */
+import { type Request, type Response } from 'express';
 import openai from '../openai';
 import ChatMessage from '../models/ChatMessage';
 import { config } from '../config';
@@ -13,11 +15,13 @@ const CHAT_SERVICE_HOOK_URL = `${config.CHAT_SERVICE_API}/send`;
 const aiControllersByUser: Record<string, AbortController> = {};
 const timeoutIdsByUser: Record<string, NodeJS.Timeout> = {};
 
-const saveClientMessage = (message: string, userId: string) => 
-    ChatMessage.create({ message, userId });
+type ChatMessageCreateType = typeof ChatMessage.create;
+type SaveClientMessageType = (message: string, userId: string) => Promise<ReturnType<ChatMessageCreateType>>;
+const saveClientMessage: SaveClientMessageType = 
+  async (message, userId) => await ChatMessage.create({ message, userId });
 
-export async function handleMessage(req: Request, res: Response) {
-    const { message, userId, id } = req.body as Record<string, string>;
+export async function handleMessage(req: Request, res: Response): Promise<void> {
+    const { message, userId } = req.body as Record<string, string>;
     if (timeoutIdsByUser[userId]) {
       clearTimeout(timeoutIdsByUser[userId]);
       delete timeoutIdsByUser[userId];
@@ -34,7 +38,7 @@ export async function handleMessage(req: Request, res: Response) {
       logger.error('Save client message error:', error.message);
     }
 
-    const sendReqToAI = async () => {
+    const sendReqToAI = async (): Promise<void> => {
       const clientMessages = await ChatMessage.findAll({
         where: { userId },
         attributes: ['message'],
@@ -61,11 +65,13 @@ export async function handleMessage(req: Request, res: Response) {
       try {
         await axios.post(CHAT_SERVICE_HOOK_URL, data);
       } catch (error) {
-        logger.error('Chat service error:', error.message);
+        logger.error('Chat service error:', (error as Error).message);
       }
     };
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     timeoutIdsByUser[userId] = setTimeout(sendReqToAI, AI_REQ_TIMEOUT);
     
     res.sendStatus(200);
 }
+
 

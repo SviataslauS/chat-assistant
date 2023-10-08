@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { type Request, type Response, type NextFunction } from 'express';
 
-export type MiddlewareType = (Request, Response, NextFunction)
-    => void | Response<string, Record<string, string>>;
+export type MiddlewareType =
+    (req: Request, res: Response, next: NextFunction) => void;

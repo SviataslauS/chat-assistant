@@ -1,5 +1,4 @@
-import winston from 'winston';
-import { format, transports } from 'winston';
+import winston, { format, transports } from 'winston';
 import { ConsoleFormatter } from 'winston-console-formatter';
 import { config } from './config';
 

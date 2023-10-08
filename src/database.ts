@@ -10,8 +10,8 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
   logging: false,
 });
 
-export const initDB = () => 
-  sequelize
+export const initDB = async (): Promise<void> => {
+  await sequelize
     .authenticate()
     .then(() => {
       console.log('Database connection has been established successfully.');
@@ -19,5 +19,6 @@ export const initDB = () =>
     .catch((err: Error) => {
       console.error('Unable to connect to the database:', err);
     });
+  };
 
 export default sequelize;
