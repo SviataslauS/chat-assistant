@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize';
-import { config } from './config';
+import { envConfig } from './envConfig';
 
-const { DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } = config;
+const { DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } = envConfig;
 
 const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
   host: DB_HOST,

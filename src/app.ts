@@ -4,7 +4,7 @@ import router from './routes';
 import errorHandler from './middlewares/errorHandler';
 import requestLogger from './middlewares/requestLogger';
 import logger from './logger';
-import { config } from './config';
+import { envConfig } from './envConfig';
 import { initDB } from './database';
 
 const DEFAULT_PORT = '3000';
@@ -28,7 +28,7 @@ app.use('/', router);
 const startServer  = async (): Promise<void> => {
   await initDB();
 
-  const portStr: string = config.PORT?.length > 0 ? config.PORT : DEFAULT_PORT;
+  const portStr: string = envConfig.PORT || DEFAULT_PORT;
   const port: number = parseInt(portStr);
   app.listen(port, (): void => {
     logger.info(`Server is running on port ${port}`);

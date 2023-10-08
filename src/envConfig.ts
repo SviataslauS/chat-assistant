@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 import { load } from 'js-yaml-loader';
 
-const schema = load('./schemas/config.yaml');
+const schema = load('./schemas/envConfig.yaml');
 const configValidationSchema = yup.object().shape(schema);
 
 export const loadConfig = (): Record<string, string> => {
@@ -21,4 +21,4 @@ export const loadConfig = (): Record<string, string> => {
   return configValues;
 };
 
-export const config = loadConfig();
+export const envConfig = loadConfig();

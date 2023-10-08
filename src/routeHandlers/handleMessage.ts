@@ -1,14 +1,14 @@
 import { type Request, type Response } from 'express';
 import openai from '../openai';
 import ChatMessage from '../models/ChatMessage';
-import { config } from '../config';
+import { envConfig } from '../envConfig';
 import logger from '../logger';
 import axios from 'axios';
 
 const SIDE_SERVER = 'server';
 const AI_MODEL_NAME = 'text-davinci-002';
 const AI_REQ_TIMEOUT = 40000; // 40sec
-const CHAT_SERVICE_HOOK_URL = `${config.CHAT_SERVICE_API}/send`;
+const CHAT_SERVICE_HOOK_URL = `${envConfig.CHAT_SERVICE_API}/send`;
 
 
 const aiControllersByUser = new Map<string, AbortController>();

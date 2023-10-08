@@ -1,6 +1,6 @@
 import winston, { format, transports } from 'winston';
 import { ConsoleFormatter } from 'winston-console-formatter';
-import { config } from './config';
+import { envConfig } from './envConfig';
 
 const logger = winston.createLogger({
   level: config.DEBUG === 'true' ? 'debug' : 'info',
