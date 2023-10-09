@@ -1,3 +1,6 @@
+/* eslint-disable import/first */
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require('dotenv').config();
 import express, { type Application } from 'express';
 import bodyParser from 'body-parser';
 import router from './routes';

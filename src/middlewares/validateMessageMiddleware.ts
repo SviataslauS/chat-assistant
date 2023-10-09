@@ -1,9 +1,7 @@
-import * as yup from 'yup';
-import { load } from 'js-yaml-loader';
 import createValidationMiddleware from './createValidationMiddleware';
+import { buildValidateSchema } from '../utils';
 
-const schema = load('../schemas/message.yaml');
-const validateSchema = yup.object().shape(schema);
+const validateSchema = buildValidateSchema('../schemas/message.yaml');
 const validateMessageMiddleware = createValidationMiddleware(validateSchema);
 
 export default validateMessageMiddleware;

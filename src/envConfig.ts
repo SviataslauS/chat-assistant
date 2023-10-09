@@ -1,9 +1,3 @@
-import * as yup from 'yup';
-import { load } from 'js-yaml-loader';
-
-const schema = load('./schemas/envConfig.yaml');
-const configValidationSchema = yup.object().shape(schema);
-
 export const loadConfig = (): Record<string, string> => {
   const configValues: Record<string, string> = {
     PORT: process.env.PORT || '',
@@ -16,8 +10,7 @@ export const loadConfig = (): Record<string, string> => {
     DEBUG: process.env.DEBUG || 'false',
     CHAT_SERVICE_API: process.env.CHAT_SERVICE_API || '',
   };
-  configValidationSchema.validateSync(configValues, { abortEarly: false });
-  
+
   return configValues;
 };
 

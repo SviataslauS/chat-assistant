@@ -1,9 +1,8 @@
 import winston, { format, transports } from 'winston';
-import { ConsoleFormatter } from 'winston-console-formatter';
 import { envConfig } from './envConfig';
 
 const logger = winston.createLogger({
-  level: config.DEBUG === 'true' ? 'debug' : 'info',
+  level: envConfig.DEBUG === 'true' ? 'debug' : 'info',
   format: format.combine(
     format.timestamp(),
     format.json()
@@ -14,7 +13,6 @@ const logger = winston.createLogger({
         format.colorize(),
         format.timestamp(),
         format.simple(),
-        new ConsoleFormatter()
       ),
     }),
   ],
