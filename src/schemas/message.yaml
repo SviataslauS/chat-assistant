@@ -1,0 +1,17 @@
+type: object
+properties:
+  id:
+    type: string
+  side:
+    type: string
+    enum:
+      - client
+  message:
+    type: string
+  userId:
+    type: string
+required:
+  - id
+  - side
+  - message
+  - userId

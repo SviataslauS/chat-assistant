@@ -1,0 +1,18 @@
+{
+  "env": {
+      "node": true,
+      "es2021": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "standard-with-typescript",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "rules": {
+    "curly": "error",
+    "@typescript-eslint/strict-boolean-expressions": 0,
+    "@typescript-eslint/prefer-nullish-coalescing": 0
+  }
+}
