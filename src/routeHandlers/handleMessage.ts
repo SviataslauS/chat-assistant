@@ -46,12 +46,18 @@ export async function handleMessage(req: Request, res: Response): Promise<void> 
       const combinedMessage = clientMessages.map((msg) => msg.message).join(' ');
       const controller = new AbortController();
       aiControllersByUser.set(userId, controller);
-      const aiResponse = await openai.completions.create({
-        model: AI_MODEL_NAME,
-        prompt: combinedMessage,
-      }, { signal: controller.signal });
+      let aiResponse;
+      try {
+        aiResponse = await openai.completions.create({
+          model: AI_MODEL_NAME,
+          prompt: combinedMessage,
+        }, { signal: controller.signal });
+      } catch (error) {
+        // for now log error but may be handled as error response to chat service
+        logger.error('Openai completions create request error:', (error as Error).message);
+      }
 
-      const aiReply = aiResponse.choices[0]?.text;
+      const aiReply = aiResponse?.choices?.[0]?.text;
       if(!aiReply){
         logger.info(`Empty AI response. Request body: ${JSON.stringify(req.body)}; combinedMessage: ${combinedMessage}`);
       }
@@ -64,6 +70,7 @@ export async function handleMessage(req: Request, res: Response): Promise<void> 
       try {
         await axios.post(CHAT_SERVICE_HOOK_URL, data);
       } catch (error) {
+        // would be good to haddle it with retry
         logger.error('Chat service error:', (error as Error).message);
       }
     };
