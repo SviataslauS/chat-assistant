@@ -1,7 +1,7 @@
 import { type Request, type Response } from 'express';
 import openai from '../openai';
 import ChatMessage from '../models/ChatMessage';
-import { envConfig } from '../envConfig';
+import envConfig from '../envConfig';
 import logger from '../logger';
 import axios from 'axios';
 

@@ -1,5 +1,6 @@
 import { Sequelize } from 'sequelize';
-import { envConfig } from './envConfig';
+import envConfig from './envConfig';
+import logger from './logger';
 
 const { DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } = envConfig;
 
@@ -14,10 +15,11 @@ export const initDB = async (): Promise<void> => {
   await sequelize
     .authenticate()
     .then(() => {
-      console.log('Database connection has been established successfully.');
+      logger.info('Database connection has been established successfully.');
     })
     .catch((err: Error) => {
-      console.error('Unable to connect to the database:', err);
+      logger.error('Unable to connect to the database:', err);
+      throw err;
     });
   };
 

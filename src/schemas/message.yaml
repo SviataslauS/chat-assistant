@@ -2,14 +2,17 @@ type: object
 properties:
   id:
     type: string
+    minLength: 1
   side:
     type: string
     enum:
       - client
   message:
     type: string
+    minLength: 1
   userId:
     type: string
+    minLength: 1
 required:
   - id
   - side

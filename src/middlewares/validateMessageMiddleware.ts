@@ -1,7 +1,7 @@
 import createValidationMiddleware from './createValidationMiddleware';
-import { buildValidateSchema } from '../utils';
 
-const validateSchema = buildValidateSchema('../schemas/message.yaml');
-const validateMessageMiddleware = createValidationMiddleware(validateSchema);
+const ENV_CONF_SCHEMA_PATH = '../schemas/message.yaml';
+
+const validateMessageMiddleware = createValidationMiddleware(ENV_CONF_SCHEMA_PATH);
 
 export default validateMessageMiddleware;

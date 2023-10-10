@@ -1,15 +1,16 @@
-import { type ValidationError } from 'yup';
 import { type MiddlewareType } from './MiddlewareType';
-import { type ValidateSchemaType } from '../utils';
+import { buildValidateFn, validateData } from '../utils';
 
-type CreateMiddleware = (schema: ValidateSchemaType) =>  MiddlewareType;
-const createValidationMiddleware: CreateMiddleware = (validateSchema) => (req,res,next) => {
-  try {
-    validateSchema.validateSync(req.body, { abortEarly: false });
-    next();
-  } catch (error) {
-    const message = (error as ValidationError).errors.join(', ');
-    return res.status(400).json({ error: message });
+type CreateMiddleware = (yamlSchemaPath: string) =>  MiddlewareType;
+const createValidationMiddleware: CreateMiddleware = (yamlSchemaPath) => {
+  const validateFn = buildValidateFn(yamlSchemaPath);
+    return (req,res,next) => {
+      const { isValid, errorsMessage } = validateData(validateFn, req.body);
+      if(isValid) {
+        next();
+      } else {
+        return res.status(400).json({ error: errorsMessage });
+      }
   }
 };
 
