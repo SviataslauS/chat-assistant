@@ -13,6 +13,7 @@
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "test": "jest ./src",
+    "test:watch": "jest ./src --watch",
     "create-db-model": "npx sequelize-cli model:generate --name ChatMessage --attributes id:uuid,side:string,message:text,userId:uuid"
   },
   "husky": {
