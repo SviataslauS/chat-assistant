@@ -217,4 +217,5 @@ describe('handleMessage', () => {
       .toHaveBeenCalledWith("Chat service error:", "Request failed with status code 500");
   });
 
+  // other tests e.g.for request cancellation may be added
 });
