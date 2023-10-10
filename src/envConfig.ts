@@ -1,3 +1,9 @@
+import { buildValidateFn, validateData } from './utils';
+
+const ENV_CONF_SCHEMA_PATH = 'schemas/envConfig.yaml';
+
+const validateFn = buildValidateFn(ENV_CONF_SCHEMA_PATH);
+
 export const loadConfig = (): Record<string, string> => {
   const configValues: Record<string, string> = {
     PORT: process.env.PORT || '',
@@ -11,7 +17,14 @@ export const loadConfig = (): Record<string, string> => {
     CHAT_SERVICE_API: process.env.CHAT_SERVICE_API || '',
   };
 
+  const { isValid, errorsMessage } = validateData(validateFn, configValues);
+  if(!isValid) {
+    throw Error(errorsMessage)
+  }
+
   return configValues;
 };
 
-export const envConfig = loadConfig();
+const envConfig = loadConfig();
+
+export default envConfig;

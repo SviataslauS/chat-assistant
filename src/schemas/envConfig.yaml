@@ -2,22 +2,31 @@ type: object
 properties:
   PORT:
     type: string
+    minLength: 1
   DB_HOST:
     type: string
+    minLength: 1
   DB_PORT:
     type: string
+    minLength: 1
   DB_NAME:
     type: string
+    minLength: 1
   DB_USER:
     type: string
+    minLength: 1
   DB_PASSWORD:
     type: string
+    minLength: 1
   OPENAI_API_KEY:
     type: string
+    minLength: 1
   DEBUG:
     type: string
+    minLength: 1
   CHAT_SERVICE_API:
     type: string
+    minLength: 1
 required:
   - PORT
   - DB_HOST

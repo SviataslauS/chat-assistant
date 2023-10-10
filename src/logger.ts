@@ -1,8 +1,8 @@
 import winston, { format, transports } from 'winston';
-import { envConfig } from './envConfig';
+import envConfig from './envConfig';
 
 const logger = winston.createLogger({
-  level: envConfig.DEBUG === 'true' ? 'debug' : 'info',
+  level: envConfig?.DEBUG === 'true' ? 'debug' : 'info',
   format: format.combine(
     format.timestamp(),
     format.json()

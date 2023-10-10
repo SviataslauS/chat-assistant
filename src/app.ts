@@ -1,26 +1,31 @@
 /* eslint-disable import/first */
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
+subscribeToUncaughtErrors();
+
 import express, { type Application } from 'express';
 import bodyParser from 'body-parser';
+import envConfig from './envConfig';
+import logger from './logger';
+import { initDB } from './database';
 import router from './routes';
 import errorHandler from './middlewares/errorHandler';
 import requestLogger from './middlewares/requestLogger';
-import logger from './logger';
-import { envConfig } from './envConfig';
-import { initDB } from './database';
 
 const DEFAULT_PORT = '3000';
 
-process.on('uncaughtException', (error: Error): void => {
-  logger.error('Uncaught Exception:', error.message);
-  process.exit(1);
-});
+function uncaughtErrorListener(errorName: string): NodeJS.UncaughtExceptionListener {
+  return (error: Error): void => {
+    // eslint-disable-next-line no-console
+    console.error(errorName, error.message);
+    process.exit(1);
+  };
+}
 
-process.on('unhandledRejection', (error: Error): void => {
-  logger.error('Unhandled Rejection:', error.message);
-  process.exit(1);
-});
+function subscribeToUncaughtErrors(): void {
+  process.on('uncaughtException', uncaughtErrorListener('Uncaught Exception:'));
+  process.on('unhandledRejection', uncaughtErrorListener('Unhandled Rejection:'));
+}
 
 const app: Application = express();
 app.use(requestLogger);
@@ -41,4 +46,3 @@ const startServer  = async (): Promise<void> => {
 startServer().catch((error) => {
   logger.error('Error starting the server:', error);
 });
-
